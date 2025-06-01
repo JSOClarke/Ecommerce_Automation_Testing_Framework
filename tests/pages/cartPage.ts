@@ -1,0 +1,88 @@
+import { Locator, Page } from "@playwright/test";
+export default class cartPage{
+    private page: Page;
+    private submitButton: Locator;
+    private emailInput: Locator;
+    private passwordInput: Locator;
+    private submitLogin: Locator;
+    private signInCheckout: Locator;
+    private billingCheckout: Locator;
+    private streetInput:Locator;
+    private cityInput:Locator;
+    private stateInput:Locator;
+    private countryInput:Locator;
+    private postcodeInput:Locator;
+    private paymentMethodDropDown: Locator;
+    private confirmFinish: Locator;
+    constructor(page: Page){
+    
+        this.page = page;
+        this.submitButton = this.page.getByTestId('proceed-1');
+        this.emailInput = this.page.getByTestId('email');
+        this.passwordInput = this.page.getByTestId('password');   
+        this.submitLogin = this.page.getByTestId('login-submit');
+        this.billingCheckout = this.page.getByTestId('proceed-3')
+        this.signInCheckout = this.page.getByTestId('proceed-2')
+        this.streetInput = this.page.locator('[data-test="street"]')
+        this.cityInput = this.page.locator('[data-test="city"]')
+        this.stateInput = this.page.locator('[data-test="state"]')
+        this.countryInput = this.page.locator('[data-test="country"]')
+        this.postcodeInput = this.page.locator('[data-test="postal_code"]')
+        this.paymentMethodDropDown = this.page.locator('[data-test="payment-method"]')
+        this.confirmFinish = this.page.getByTestId('finish');
+
+    
+    }
+
+    async clickSubmit(){
+        await this.submitButton.click();
+    }
+
+    async loginInput({email, password}){
+        await this.emailInput.fill(email);
+        await this.passwordInput.fill(password);
+    }
+
+    async loginSubmit(){
+        await this.submitLogin.click();
+        await this.signInCheckout.click();
+
+    }
+    
+    async billingInput({street, city, state,country,postcode}){
+        await this.streetInput.fill(street);
+        await this.cityInput.fill(city);
+        await this.stateInput.fill(state);
+        await this.countryInput.fill(country);
+        await this.postcodeInput.fill(postcode);
+    }
+
+    async billingSubmit(){
+        await this.billingCheckout.click();
+    }
+
+    async paymentInputCashonDelivery(){
+        await this.paymentMethodDropDown.click();
+        await this.page.selectOption('#payment-method', {label: 'Cash on Delivery'});
+
+  
+    }
+
+        async selectPaymentMethod(method:string){
+        await this.page.selectOption('#payment-method', {label: method});
+
+  
+    }
+
+    async paymentSubmit(){
+        await this.confirmFinish.click();
+    }
+
+    getSuccessMessage(){
+        return this.page.getByTestId('payment-success-message');
+    }
+
+    async isSuccessMessageVisible(): Promise<boolean>{
+        return await this.getSuccessMessage().isVisible()
+    }
+}
