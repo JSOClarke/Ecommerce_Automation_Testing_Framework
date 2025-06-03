@@ -68,4 +68,12 @@ async clickLangButton(){
     await this.langButton.click();
 }
 
+
+async waitForPageLoad() {
+  await this.page.waitForLoadState('load');
+}
+
+
+
+
 }

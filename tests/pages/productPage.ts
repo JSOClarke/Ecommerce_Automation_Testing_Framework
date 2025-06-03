@@ -50,4 +50,10 @@ export default class ProducePage {
         await this.cartNavButton.click();
     }
 
+async waitForPageLoad() {
+  await this.page.waitForLoadState('load');
+}
+
+
+
 }

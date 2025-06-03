@@ -120,4 +120,9 @@ async waitForEnabled(locator: Locator, timeout = 5000) {
 
 }
 
+async waitForPageLoad() {
+  await this.page.waitForLoadState('load');
+}
+
+
 }

@@ -2,15 +2,15 @@
 
 | Module | ID | Test Case Title | Steps to Reproduce | Expected Result |
 |---|---|---|---|---|
-| Authentication | A01 | Invalid login | Enter invalid email & password, click Login | Redirects to dashboard/home |
-| Authentication | A02 | Valid login | Enter wrong password | Error message displayed |
-| Authentication | A03 | Empty login form | Submit with empty fields | Validation errors shown |
-| Authentication | A04 | Signup with new email | Fill out valid details & submit | Account created, redirect/login |
-| Authentication | A05 | Signup with existing email | Use same email again | Error: email already exists |
-| Authentication | A06 | Password validation | Use short or mismatched password | Appropriate error shown |
-| Home Page | H01 | Load homepage | Navigate to URL | Page loads without errors |
-| Home Page | H02 | Check main navigation | Click all nav links | Each link routes correctly |
-| Home Page | H03 | Responsive layout | Resize window/device view | Layout adjusts correctly |
+| Authentication | A01 | Invalid login | Enter invalid email & password, click Login | Redirects to dashboard/home | X
+| Authentication | A02 | Valid login | Enter wrong password | Error message displayed | X
+| Authentication | A03 | Empty login form | Submit with empty fields | Validation errors shown | X
+| Authentication | A04 | Signup with new email | Fill out valid details & submit | Account created, redirect/login | X
+| Authentication | A05 | Signup with existing email | Use same email again | Error: email already exists |X
+| Authentication | A06 | Password validation | Use short or mismatched password | Appropriate error shown |X
+| Home Page | H01 | Load homepage | Navigate to URL | Page loads without errors |X
+| Home Page | H02 | Check main navigation | Click all nav links | Each link routes correctly | X
+| Home Page | H03 | Responsive layout | Resize window/device view | Layout adjusts correctly | TBC
 | Home Page | H04 | Broken links | Crawl clickable links | All links return 200 OK |
 | Home Page | H05 | Logo click | Click on site logo | Returns to homepage |
 | Product Listing | P01 | Load product list | Navigate to /products | Products are visible |
@@ -39,3 +39,5 @@
 | Negative Cases | N01 | Add 0 quantity | Try adding 0 items | Shows error or disables button |
 | Negative Cases | N02 | Navigate to broken URL | Visit /nonexistent-page | Displays 404 or custom error page |
 | Negative Cases | N03 | Script injection attempt | Enter `<script>` in input | Input is sanitized |
+
+** Additional Cases - @Home-Page | H0X | Language Switcher | Click each language option | Verify text updates to correct language

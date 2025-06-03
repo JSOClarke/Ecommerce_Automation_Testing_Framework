@@ -1,10 +1,20 @@
-import { test, Page, expect,Locator } from "@playwright/test";
+import { test, Page, expect,Locator,Response,request } from "@playwright/test";
 import HomePage from "../pages/homepage";
 import ProductPage from "../pages/productPage";
 import CartPage from "../pages/cartPage";
 import { validCreds } from "../data/validCreds";
 import { validBillingCreds } from "../data/validBillingCreds";
-import LoginPage from "../pages/LoginPage";
+import { inValidCreds } from "../data/invalidCreds";
+import signInPage from "../pages/signInPage";
+import { log } from "console";
+import { validRegisterCreds } from "../data/validRegisterCreds";
+import RegisterPage from "../pages/RegisterPage";
+import { invalidEmailRegisterCreds } from "../data/invalidRegisterEmailCreds";
+import { invalidRegisterPasswordCreds } from "../data/invalidRegisterPasswordCreds";
+import ContactPage from "../pages/ContactPage";
+import NavBar from "../pages/NavBar";
+import { Request } from "@playwright/test";
+import { APIRequestContext } from "@playwright/test";
 // import homePage from "../pages/homepage.spec";
 
 
@@ -47,7 +57,7 @@ await page.goto(baseUrl);
 
 await page.locator('[data-test="nav-sign-in"]').click();
 
-const loginP = new LoginPage(page);
+const loginP = new signInPage(page);
 
 await loginP.inputLogin(validCreds[0].email,validCreds[0].password);
 
@@ -81,36 +91,231 @@ await cartP.paymentInputCashonDelivery();
 await cartP.paymentSubmit();
 
 await page.waitForTimeout(100);
-
-// const buttonHandle = page.getByTestId('finish');
-
-// await cartP.waitForEnabled(buttonHandle);
-
-// await expect(button).toBeVisible({timeout: 1000});
-// await expect(button).toBeEnabled({timeout: 1000});
 await cartP.paymentSubmit();
 
 await page.pause();
+})
 
-// expect()
-// // await expect(page.getByTestId('finish')).toBeEnabled();
+test('@AUTH, A01 Valid login - Enter wrong email and password	- Error message displayed', async ({page}) =>{
 
-// const isEnabled = await cartP.getConfirmStateSwitch();
-// if(isEnabled){
-//     await cartP.paymentSubmit();
-// }
+await page.goto(baseUrl);
 
-// expect(cartP.getConfirmStateSwitch()).toBeTruthy();
-// await page.pause();
-// await page.waitForTimeout(1000)
+const homeP = new HomePage(page);
 
+await homeP.clickSignInButton();
 
+const loginP = new signInPage(page);
 
+await loginP.inputLogin(inValidCreds[1].email,inValidCreds[1].password);
 
-// await expect(page.getByTestId('finish')).toBeDisabled();
-// await expect(page.getByTestId('finish')).not.toBeDisabled();
+await loginP.clickLoginButton();
 
-// await cartP.paymentSubmit();
+await expect(loginP.getLoginErrorMsgLocator()).toBeVisible();
+console.log(`LOGIN ERROR MSG: ${loginP.getEmailErrorMsgLocator().textContent()}`);
 
 })
 
+
+test('@AUTH, A02 Valid login - Enter wrong password	- Error message displayed', async ({page}) =>{
+
+await page.goto(baseUrl);
+
+const homeP = new HomePage(page);
+
+await homeP.clickSignInButton();
+
+const loginP = new signInPage(page);
+
+await loginP.inputLogin(inValidCreds[0].email,inValidCreds[0].password);
+
+await loginP.clickLoginButton();
+
+await expect(loginP.getLoginErrorMsgLocator()).toBeVisible();
+console.log(`LOGIN ERROR MSG: ${loginP.getEmailErrorMsgLocator().textContent()}`);
+
+})
+
+test('@AUTH, A03 Signup with new email | Fill out valid details & submit | Account created, redirect/login', async ({page}) =>{
+
+await page.goto(baseUrl);
+
+const homeP = new HomePage(page);
+
+await homeP.clickSignInButton();
+
+const loginP = new signInPage(page);
+
+await loginP.inputLogin('','');
+
+await loginP.clickLoginButton();
+
+await expect(loginP.getEmailErrorMsgLocator()).toBeVisible();
+await expect(loginP.getPasswordErrorMsgLocator()).toBeVisible();
+console.log(`EMAIL ERROR MSG: ${await loginP.getEmailErrorMsgLocator().textContent()}`)
+console.log(`PASSWORD ERROR MSG: ${await loginP.getPasswordErrorMsgLocator().textContent()}`)
+
+
+})
+
+test('@AUTH | A04 | Signup with new email | Fill out valid details & submit | Account created, redirect/login', async ({page})=>{
+
+await page.goto(baseUrl);
+
+const homeP = new HomePage(page);
+
+await homeP.clickSignInButton();
+
+const loginP = new signInPage(page);
+
+await loginP.clickRegisterButton();
+
+const registerP = new RegisterPage(page);
+// await page.getByTestId('first-name').fill("jordan");
+await registerP.inputRegistration(validRegisterCreds[4]);
+await registerP.submitRegistration();
+
+await expect(page).toHaveURL(/login/i );
+
+await page.pause();
+})
+
+test('@Authentication | A05 | Signup with existing email | Use same email again | Error: email already exists |', async ({page})=>{
+
+await page.goto(baseUrl);
+
+const homeP = new HomePage(page);
+
+await homeP.clickSignInButton();
+
+const loginP = new signInPage(page);
+
+await loginP.clickRegisterButton();
+
+const registerP = new RegisterPage(page);
+// await page.getByTestId('first-name').fill("jordan");
+await registerP.inputRegistration(invalidEmailRegisterCreds[0]);
+await registerP.submitRegistration();
+await expect(registerP.getRegistrationErrorMsg()).toBeVisible();
+console.log(`REG ERROR MSG: ${await registerP.getRegistrationErrorMsg().textContent()}`)
+await page.pause();
+})
+
+test('@Authentication | A06 | Password validation | Use short or mismatched password | Appropriate error shown', async ({page})=>{
+
+await page.goto(baseUrl);
+
+const homeP = new HomePage(page);
+
+await homeP.clickSignInButton();
+
+const loginP = new signInPage(page);
+
+await loginP.clickRegisterButton();
+
+const registerP = new RegisterPage(page);
+// await page.getByTestId('first-name').fill("jordan");
+
+for (let invalidCred of invalidRegisterPasswordCreds){
+await registerP.inputRegistration(invalidCred);
+await registerP.submitRegistration();
+await expect(registerP.getPasswordErrorMsg()).toBeVisible();
+console.log(`REG PASSWORD: ${invalidCred.password} ===> REG ERROR MSG: ${await registerP.getPasswordErrorMsg().textContent()}`)
+}
+await page.pause();
+})
+
+test('@Home-Page | H01 | Load homepage | Navigate to URL | Page loads without errors', async({page}) =>{
+const response = await page.goto(baseUrl);
+
+expect(response?.status()).toBe(200);
+
+})
+
+test('@Home-Page | H02 | Check main navigation | Click all nav links | Each link routes correctly', async({page})=>{
+
+    await page.goto(baseUrl);
+
+// == Home Page
+
+    const homeP = new HomePage(page);
+    await homeP.clickHomeButton();
+    await homeP.waitForPageLoad();
+    await expect(page).toHaveURL(/practicesoftwaretesting.com/)
+    
+// == Contact Page
+
+    await homeP.clickContactButton();
+    const contactP = new ContactPage(page);
+    await contactP.waitForPageLoad();
+    await expect(page).toHaveURL(/contact/);
+
+// == Sign-In Page
+
+    await homeP.clickSignInButton();
+    const signInP = new signInPage(page);
+    await signInP.waitForPageLoad();
+    await expect(page).toHaveURL(/login/);
+
+// == Lang Page Skipped for H0X
+
+// == Category Page
+
+    const navBarP = new NavBar(page);
+    await navBarP.clickNavBarHandTools();
+    await expect(page).toHaveURL(/hand-tools/)
+
+    await navBarP.clickNavBarPowerTools();
+    await expect(page).toHaveURL(/power-tools/)
+
+
+    await navBarP.clickNavBarOther();
+    await expect(page).toHaveURL(/other/)
+
+    await navBarP.clickNavBarSpecialTools();
+    await expect(page).toHaveURL(/special-tools/)
+    
+    await navBarP.clickNavBarRentals();
+    await expect(page).toHaveURL(/rentals/)
+
+
+    await page.pause()
+
+})
+
+test('| Home Page | H05 | Logo click | Click on site logo | Returns to homepage', async ({page})=>{
+
+    await page.goto(baseUrl);
+
+    const navbarP = new NavBar(page);
+
+    await navbarP.clickLogo(); 
+    await expect(page).toHaveURL(/practicesoftwaretesting.com/);
+})
+
+test('@Home Page | H04 | Broken links | Crawl clickable links | All links return 200 OK |', async({page})=>{
+
+    await page.goto(baseUrl);
+
+    const links = await page.getByRole('link').all();
+
+    for(const link of links){
+    const href = await link.getAttribute('href')
+
+    // check to see if its a relative or abosulte link
+
+
+    if (!href || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#')){
+        continue;
+    }
+        console.log(`ADDR: ${href}`);
+
+    const url = href?.startsWith('http') ? href : `${baseUrl}${href}`
+
+    const response = await page.request.get(url);
+    expect( response?.status()).toBe(200);
+    
+    console.log(`STATUS CODE: ${response?.status()} => ADDR: ${href}`);
+
+
+    }
+})
