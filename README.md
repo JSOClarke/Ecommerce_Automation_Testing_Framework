@@ -30,9 +30,9 @@
 | Checkout | CH02 | Fill in form | Enter shipping & billing info | Form accepts valid data |
 | Checkout | CH03 | Submit checkout | Click 'Place order' (simulated) | Confirmation or summary shown |
 | Checkout | CH04 | Form validation | Leave fields blank or invalid | Shows errors appropriately |
-| End-to-End | E2E01 | Full guest purchase | Browse > Add to cart > Checkout | Order completes successfully |
-| End-to-End | E2E02 | Logged-in purchase | Login > Browse > Checkout | Order completes successfully |
-| End-to-End | E2E03 | Cart persistence after login | Add items > Login | Cart retains added items |
+| End-to-End | E2E01 | Full guest purchase | Browse > Add to cart > Checkout | Order completes successfully | X
+| End-to-End | E2E02 | Logged-in purchase | Login > Browse > Checkout | Order completes successfully | X
+| End-to-End | E2E03 | Cart persistence after login | Add items > Login | Cart retains added items | X
 | Mobile | M01 | Mobile view loads | Open site in mobile viewport | UI fits screen, no horizontal scroll |
 | Mobile | M02 | Mobile nav menu | Open and close burger menu | All links work properly |
 | Mobile | M03 | Add to cart mobile | Add items via mobile view | Works the same as desktop |
