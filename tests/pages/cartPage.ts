@@ -1,5 +1,5 @@
 import { Locator, Page } from "@playwright/test";
-export default class cartPage{
+export default class CartPage{
     private page: Page;
     private submitButton: Locator;
     private emailInput: Locator;
@@ -14,6 +14,9 @@ export default class cartPage{
     private postcodeInput:Locator;
     private paymentMethodDropDown: Locator;
     private confirmFinish: Locator;
+    private paymentFinish2: Locator;
+
+
     constructor(page: Page){
     
         this.page = page;
@@ -30,7 +33,8 @@ export default class cartPage{
         this.postcodeInput = this.page.locator('[data-test="postal_code"]')
         this.paymentMethodDropDown = this.page.locator('[data-test="payment-method"]')
         this.confirmFinish = this.page.getByTestId('finish');
-
+        this.paymentFinish2 = this.page.locator('[disabled=""]');
+        
     
     }
 
@@ -48,7 +52,12 @@ export default class cartPage{
         await this.signInCheckout.click();
 
     }
-    
+
+    async signSubmit(){
+        await this.signInCheckout.click();
+
+    }
+
     async billingInput({street, city, state,country,postcode}){
         await this.streetInput.fill(street);
         await this.cityInput.fill(city);
@@ -68,7 +77,9 @@ export default class cartPage{
   
     }
 
-        async selectPaymentMethod(method:string){
+
+
+    async selectPaymentMethod(method:string){
         await this.page.selectOption('#payment-method', {label: method});
 
   
@@ -84,5 +95,29 @@ export default class cartPage{
 
     async isSuccessMessageVisible(): Promise<boolean>{
         return await this.getSuccessMessage().isVisible()
+
+        // return
     }
+
+
+
+async isConfirmStateSwitch() {
+
+    return await this.confirmFinish.getAttribute('disabled');
+    // const hasDisabledAttr = await this.confirmFinish.getAttribute('disabled');    
+    // return hasDisabledAttr == null;
+}
+
+async waitForEnabled(locator: Locator, timeout = 5000) {
+  const elementHandle = await locator.elementHandle();
+  if (!elementHandle) throw new Error('Element not found');
+
+  await this.page.waitForFunction(
+    (el) => !el.hasAttribute('disabled'),
+    elementHandle,
+    { timeout }
+  )
+
+}
+
 }

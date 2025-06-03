@@ -1,6 +1,6 @@
 import {expect, Locator, Page} from '@playwright/test'
 
-export default class homePage{
+export default class HomePage{
 
 
 private page: Page
@@ -38,15 +38,34 @@ constructor(page:Page){
 
     //Item selection
 
-    this.firstItem = this.page.locator('.card').nth(0);
-    // this.firstItem = this.page.locator('[data-test="product-01JWM2AJBMS546694SZ1ARW49S"]');
+    // this.firstItem = this.page.locator('.card').nth(0);
+    this.firstItem = this.page.locator('[data-test="product-01JWVBS6H67KBHTSJT3V91GHWG"]')
 }
 
-async selectFirstItems(){
+async selectFirstItem(){
     await this.firstItem.click();
 }
 
+async clickHomeButton(){
+    await this.homeButton.click();
+}
+
+async clickCatButton(){
+    await this.catButton.click();
+}
+
+async clickContactButton(){
+    await this.contactButton.click();
+}
 
 
+async clickSignInButton(){
+    await this.signInButton.click();
+}
+
+
+async clickLangButton(){
+    await this.langButton.click();
+}
 
 }
