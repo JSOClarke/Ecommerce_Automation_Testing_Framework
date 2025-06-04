@@ -18,6 +18,9 @@ export default class NavBar{
     private navbarLangNL: Locator;
     private navbarLangTR: Locator;
     private navbarLogo: Locator;
+    private cartNavButton: Locator;
+    private cartQuantity: Locator;
+
     
 
     constructor(page:Page){
@@ -39,8 +42,19 @@ export default class NavBar{
         this.navbarLangNL = this.page.getByTestId('lang-nl');
         this.navbarLangTR = this.page.getByTestId('lang-tr');
         this.navbarLogo = this.page.locator('.navbar-brand');
+        this.cartNavButton = this.page.getByTestId('nav-cart');
+        this.cartQuantity = this.page.getByTestId('cart-quantity');
 
 
+
+    }
+
+    getCartQuantity():Locator{
+        return this.cartQuantity;
+    }
+
+    async clickNavCart(){
+        await this.cartNavButton.click();
     }
 
     async clickLogo(){

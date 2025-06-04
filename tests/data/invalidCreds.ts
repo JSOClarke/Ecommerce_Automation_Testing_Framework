@@ -17,5 +17,10 @@ export const inValidCreds = [
     email: 'admin@practicesoftwaretesting.com',
     password: 'gargfield'
     }
-
+    ,{
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: ''
+    },
 ]

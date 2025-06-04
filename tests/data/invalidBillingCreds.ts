@@ -1,10 +1,10 @@
-export const validBillingCreds = [
+export const invalidBillingCreds = [
     {
-        street: 'Gateway Park',
-        city: 'Manchester',
-        state: 'Texas',
-        country: 'United States',
-        postcode: 'OL9 9XP'
+        street: '',
+        city: '',
+        state: '',
+        country: '',
+        postcode: ''
     },
     {
         street: '10 Downing Street',

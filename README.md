@@ -11,17 +11,17 @@
 | Home Page | H01 | Load homepage | Navigate to URL | Page loads without errors |X
 | Home Page | H02 | Check main navigation | Click all nav links | Each link routes correctly | X
 | Home Page | H03 | Responsive layout | Resize window/device view | Layout adjusts correctly | TBC
-| Home Page | H04 | Broken links | Crawl clickable links | All links return 200 OK |
-| Home Page | H05 | Logo click | Click on site logo | Returns to homepage |
-| Product Listing | P01 | Load product list | Navigate to /products | Products are visible |
-| Product Listing | P02 | Click product card | Click on product image or title | Redirects to product detail |
+| Home Page | H04 | Broken links | Crawl clickable links | All links return 200 OK | X
+| Home Page | H05 | Logo click | Click on site logo | Returns to homepage | X
+| Product Listing | P01 | Load product list | Navigate to /products | Products are visible | X
+| Product Listing | P02 | Click product card | Click on product image or title | Redirects to product detail |X
 | Product Listing | P03 | Product info | Verify name, price, image | Data matches expected values |
 | Product Listing | P04 | Sort products | Select from sort dropdown | Products are reordered |
 | Product Listing | P05 | Pagination | Navigate to next/prev page | Product list updates |
 | Product Detail | PD01 | Open detail page | Click a product | Page loads with correct info |
 | Product Detail | PD02 | Add to cart | Click "Add to Cart" | Cart count updates |
 | Product Detail | PD03 | Quantity selection | Change quantity before adding | Correct quantity added |
-| Cart | C01 | View cart | Click cart icon | Cart page loads |
+| Cart | C01 | View cart | Click cart icon | Cart page loads |X
 | Cart | C02 | Update quantity | Change quantity field | Total price updates |
 | Cart | C03 | Remove item | Click remove/delete | Item disappears from cart |
 | Cart | C04 | Cart persistence | Reload or revisit cart | Cart items remain |

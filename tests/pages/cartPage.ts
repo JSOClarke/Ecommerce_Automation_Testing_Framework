@@ -15,6 +15,11 @@ export default class CartPage{
     private paymentMethodDropDown: Locator;
     private confirmFinish: Locator;
     private paymentFinish2: Locator;
+    private checkoutTitle: Locator;
+    private paymentTitle: Locator;
+    private billingTitle: Locator;
+    private cartUpdateInput: Locator;
+    private cartRemoteButton: Locator;
 
 
     constructor(page: Page){
@@ -34,9 +39,34 @@ export default class CartPage{
         this.paymentMethodDropDown = this.page.locator('[data-test="payment-method"]')
         this.confirmFinish = this.page.getByTestId('finish');
         this.paymentFinish2 = this.page.locator('[disabled=""]');
+        this.checkoutTitle = this.page.locator('h3');
+        this.paymentTitle = this.page.getByRole('heading', {name: 'Payment'});
+        this.billingTitle = this.page.getByRole('heading', {name: 'Billing Address'});
+        this.cartUpdateInput = this.page.getByTestId('product-quantity');
+        this.cartRemoteButton = this.page.locator('a .btn-danger');
         
     
     }
+
+getCartUpdateInput():Locator{
+    return this.cartUpdateInput;
+}
+
+getCartRemoveButton():Locator{
+    return this.cartRemoteButton;
+}
+
+getBillingSubmit():Locator{
+    return this.billingCheckout;
+}
+
+getPaymentTitleLocator():Locator{
+    return this.paymentTitle;
+}
+
+getBillingTitleLocator():Locator{
+    return this.billingTitle;
+}
 
     async clickSubmit(){
         await this.submitButton.click();
@@ -58,7 +88,7 @@ export default class CartPage{
 
     }
 
-    async billingInput({street, city, state,country,postcode}){
+    async billingInput({ street, city, state, country, postcode }){
         await this.streetInput.fill(street);
         await this.cityInput.fill(city);
         await this.stateInput.fill(state);

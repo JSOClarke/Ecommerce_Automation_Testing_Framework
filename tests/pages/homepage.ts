@@ -14,7 +14,10 @@ private sortDropDown: Locator;
 private priceRangeScroll: Locator;
 private searchInput: Locator;
 private searchInputCancel: Locator;
-private searchInputSubmit: Locator
+private searchInputSubmit: Locator;
+
+private productsCardSelector: Locator; 
+private productsCardImageSelector: Locator;
 
 private firstItem: Locator;
 
@@ -39,11 +42,29 @@ constructor(page:Page){
     //Item selection
 
     // this.firstItem = this.page.locator('.card').nth(0);
-    this.firstItem = this.page.locator('[data-test="product-01JWVBS6H67KBHTSJT3V91GHWG"]')
+
+    // Universal PRODCUCT CARD
+    this.productsCardSelector = this.page.locator('[data-test^="product-"]');
+    this.productsCardImageSelector = this.page.locator('[data-test^="product-"] img');
+
+    //
+
+}
+
+getProductElement(index:number):Locator{
+    return this.productsCardSelector.nth(index);
+}
+
+getProductsCardImageSelector():Locator{
+    return this.productsCardImageSelector;
+}
+
+getProductCardSelector():Locator{
+    return this.productsCardSelector;
 }
 
 async selectFirstItem(){
-    await this.firstItem.click();
+    await this.productsCardSelector.nth(1).click();
 }
 
 async clickHomeButton(){
@@ -72,8 +93,5 @@ async clickLangButton(){
 async waitForPageLoad() {
   await this.page.waitForLoadState('load');
 }
-
-
-
 
 }

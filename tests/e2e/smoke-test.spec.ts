@@ -6,7 +6,7 @@ import { validCreds } from "../data/validCreds";
 import { validBillingCreds } from "../data/validBillingCreds";
 import { inValidCreds } from "../data/invalidCreds";
 import signInPage from "../pages/signInPage";
-import { log } from "console";
+import { count, log } from "console";
 import { validRegisterCreds } from "../data/validRegisterCreds";
 import RegisterPage from "../pages/RegisterPage";
 import { invalidEmailRegisterCreds } from "../data/invalidRegisterEmailCreds";
@@ -15,6 +15,7 @@ import ContactPage from "../pages/ContactPage";
 import NavBar from "../pages/NavBar";
 import { Request } from "@playwright/test";
 import { APIRequestContext } from "@playwright/test";
+import { invalidBillingCreds } from "../data/invalidBillingCreds";
 // import homePage from "../pages/homepage.spec";
 
 
@@ -111,7 +112,7 @@ await loginP.inputLogin(inValidCreds[1].email,inValidCreds[1].password);
 await loginP.clickLoginButton();
 
 await expect(loginP.getLoginErrorMsgLocator()).toBeVisible();
-console.log(`LOGIN ERROR MSG: ${loginP.getEmailErrorMsgLocator().textContent()}`);
+console.log(`LOGIN ERROR MSG: ${await loginP.getEmailErrorMsgLocator().textContent()}`);
 
 })
 
@@ -131,7 +132,7 @@ await loginP.inputLogin(inValidCreds[0].email,inValidCreds[0].password);
 await loginP.clickLoginButton();
 
 await expect(loginP.getLoginErrorMsgLocator()).toBeVisible();
-console.log(`LOGIN ERROR MSG: ${loginP.getEmailErrorMsgLocator().textContent()}`);
+console.log(`LOGIN ERROR MSG: ${await loginP.getEmailErrorMsgLocator().textContent()}`);
 
 })
 
@@ -319,3 +320,215 @@ test('@Home Page | H04 | Broken links | Crawl clickable links | All links return
 
     }
 })
+
+test('@Product Listing | P01 | Load product list | Navigate to /products | Products are visible |', async ({page}) =>{
+
+    await page.goto(baseUrl);
+
+    //  assert that we have items on the landing page
+
+    const homeP = new HomePage(page);
+    
+    const products = homeP.getProductCardSelector();
+
+    const productsCount = await products.count();
+        for (let x = 0; x<productsCount; x++){
+            await expect(products.nth(x)).toBeVisible();
+        }    
+
+
+
+    const productImage = homeP.getProductsCardImageSelector()
+    // const productImage = page.locator('[data-test^="product-"] img');
+    
+    const productImageCount = await productImage.count();
+    // Source and the image visibility
+    for (let count = 0; count<productImageCount; count++){
+        
+        // console.log(`PRODUCT IMAGE SOURCE: ${await productImage.nth(count).getAttribute('src')}`)
+        await expect(productImage.nth(count), ).toHaveAttribute('src', /.+/);
+        await expect(productImage.nth(count), `ELEMENT :${productImage.nth(count).getAttribute('src')}, is no visible`).toBeVisible();
+    }
+})
+
+test('| Product Listing | P02 | Click product card | Click on product image or title | Redirects to product detail', async ({page})=>{
+
+    await page.goto(baseUrl);
+
+    const homeP = new HomePage(page);
+
+    await homeP.selectFirstItem();
+
+    const productP = new ProductPage(page);
+
+    const productTitleLocator = productP.getProductTitle()
+    const productDetailLocator = productP.getProductDetails()
+    await expect(productTitleLocator).toBeVisible();
+    await expect(productDetailLocator).toBeVisible();
+})
+
+test('| Cart | C01 | View cart | Click cart icon | Cart page loads', async({page})=>{
+
+    await page.goto(baseUrl);
+
+    const homeP = new HomePage(page);
+
+    await homeP.selectFirstItem();
+    const productP = new ProductPage(page);
+
+    const cartNumber = 3;
+
+    await productP.addQuanity(cartNumber);
+    await productP.addToCart();
+
+    const navBarP = new NavBar(page);
+
+    await expect(navBarP.getCartQuantity()).toHaveText(`${cartNumber+1}`)
+    await navBarP.clickNavCart();
+    await expect(page).toHaveURL(/checkout/)
+
+})
+
+test('Cart C02', async({page})=>{
+        await page.goto(baseUrl);
+
+    const homeP = new HomePage(page);
+
+    await homeP.selectFirstItem();
+    const productP = new ProductPage(page);
+
+    const cartNumber = 3;
+
+    await productP.addQuanity(cartNumber);
+    await productP.addToCart();
+
+    const navBarP = new NavBar(page);
+
+    await navBarP.clickNavCart();
+
+    const cartP = new CartPage(page);
+
+
+
+    await expect(cartP.getCartUpdateInput()).toHaveValue(`${cartNumber+1}`);
+
+    const updatedCartAmount = 7;
+    await cartP.getCartUpdateInput().fill(`${updatedCartAmount}`);
+    await page.keyboard.press('Enter');
+
+    const navBarPA = new NavBar(page);
+    await expect(navBarPA.getCartQuantity()).toHaveText(`${updatedCartAmount}`)
+
+})
+
+test('| Checkout | CH01 | Open checkout | Go to checkout from cart | Checkout page loads', async({page})=>{
+
+    await page.goto(baseUrl);
+
+    const homeP = new HomePage(page);
+
+    await homeP.selectFirstItem();
+    const productP = new ProductPage(page);
+
+    const cartNumber = 3;
+
+    await productP.addQuanity(cartNumber);
+    await productP.addToCart();
+    
+    const navBar = new NavBar(page);
+    await navBar.clickNavCart();
+
+    const cartP = new CartPage(page);
+    await cartP.clickSubmit();
+    await expect(page).toHaveURL(/checkout/)
+
+})
+
+test('CH02 - fill in valid form details', async({page})=>{
+
+
+        await page.goto(baseUrl);
+
+    const homeP = new HomePage(page);
+
+    const itemNumber = 3;
+
+    await homeP.getProductElement(itemNumber).click();
+    const productP = new ProductPage(page);
+
+    const cartNumber = 3;
+
+    await productP.addQuanity(cartNumber);
+    await productP.addToCart();
+    await page.waitForTimeout(5000);
+    
+    const navBar = new NavBar(page);
+    await navBar.clickNavCart();
+
+    const cartP = new CartPage(page);
+    await cartP.clickSubmit();
+    await cartP.loginInput(validCreds[2]);
+    await cartP.loginSubmit();
+    await expect(cartP.getBillingTitleLocator()).toBeVisible();
+
+    await cartP.billingInput(validBillingCreds[1]);
+    await cartP.billingSubmit();
+    await expect(cartP.getPaymentTitleLocator()).toBeVisible();    
+
+})
+
+test('CH03', async ({page})=>{
+
+const homeP = new HomePage(page);
+
+await page.goto(baseUrl);
+
+await homeP.selectFirstItem();
+
+const productP = new ProductPage(page);
+
+await productP.addQuanity(1);
+await productP.addToCart();
+await page.waitForTimeout(5000)
+await productP.clickOnCart();
+
+const cartP = new CartPage(page);
+
+await cartP.clickSubmit();
+
+await cartP.loginInput(validCreds[0]);
+await cartP.loginSubmit();
+await cartP.billingInput(validBillingCreds[0])
+await cartP.billingSubmit();
+await cartP.paymentInputCashonDelivery();
+await cartP.paymentSubmit();
+expect(cartP.getSuccessMessage()).toBeVisible();
+await page.pause();
+})
+
+test('CHO04', async({page})=>{
+
+const homeP = new HomePage(page);
+
+await page.goto(baseUrl);
+
+await homeP.selectFirstItem();
+
+const productP = new ProductPage(page);
+
+await productP.addQuanity(1);
+await productP.addToCart();
+await page.waitForTimeout(5000)
+await productP.clickOnCart();
+
+const cartP = new CartPage(page);
+
+await cartP.clickSubmit();
+
+await cartP.loginInput(validCreds[0]);
+await cartP.loginSubmit();
+await cartP.billingInput(invalidBillingCreds[0])
+await expect(cartP.getBillingSubmit()).toBeDisabled();
+
+})
+

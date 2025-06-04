@@ -9,6 +9,8 @@ export default class ProducePage {
     private minusQButton: Locator;
     private addFavButton: Locator;
     private addToCartButton: Locator;
+    private productTitle: Locator;
+    private productDetails: Locator;
 
 
     //PRODUCT DETAILS BOTTOM SIDE
@@ -29,9 +31,16 @@ export default class ProducePage {
         this.firstRelatedProduct = this.page.locator('.card').nth(0);
     
         this.cartNavButton = this.page.getByTestId('nav-cart');
+        this.productTitle = this.page.getByTestId('product-name');
+        this.productDetails = this.page.getByTestId('product-description')
     }
 
-
+    getProductDetails():Locator{
+        return this.productDetails;
+    }
+    getProductTitle():Locator{
+        return this.productTitle;
+    }
     async addQuanity(amount:number){
         for(let x = 0; x<amount; x++){
         await this.plusQButton.click();
