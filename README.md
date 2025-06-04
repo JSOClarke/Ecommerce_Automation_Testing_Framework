@@ -9,7 +9,7 @@ I'm using this repo to test a demo bookstore/eCommerce site using a modern test 
 -  **Playwright for automated UI testing**
 -  **API testing** (GET, POST, error handling, etc.)
 -  **Docker-based environment setup**
--  **Test planning**, edge case design, and issue reporting practices - (testcase xml included)
+-  **Test planning**, edge case design, and issue reporting practices - (testcase_writeup.md included)
 
 ---
 
