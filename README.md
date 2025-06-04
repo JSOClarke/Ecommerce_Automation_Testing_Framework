@@ -1,4 +1,4 @@
-# 🧪 Personal Automation Framework
+# Personal Automation Framework
 
 Welcome to my personal testing project! This repo demonstrates how I apply software testing best practices using an example eCommerce website.
 
@@ -6,15 +6,14 @@ Welcome to my personal testing project! This repo demonstrates how I apply softw
 
 I'm using this repo to test a demo bookstore/eCommerce site using a modern test stack:
 
-- ✅ **Manual testing techniques** based on real-world QA workflows
-- 🤖 **Playwright for automated UI testing**
-- 🧪 **API testing** (GET, POST, error handling, etc.)
-- 🐳 **Docker-based environment setup**
-- 📋 **Test planning**, edge case design, and issue reporting practices
+-  **Playwright for automated UI testing**
+-  **API testing** (GET, POST, error handling, etc.)
+-  **Docker-based environment setup**
+-  **Test planning**, edge case design, and issue reporting practices
 
 ---
 
-## 🧰 Technologies used
+## Technologies used
 
 | Area               | Stack                     |
 |--------------------|---------------------------|
