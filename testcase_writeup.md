@@ -23,13 +23,13 @@
 ## 🛒 Cart
 
 - [x] C01 - View cart: Click cart icon in header → Cart page loads
-- [ ] C02 - Update/remove item in cart: Change quantity or click remove → Cart updates correctly
+- [X] C02 - Update/remove item in cart: Change quantity or click remove → Cart updates correctly
 - [ ] C03 - Cart persistence: Add to cart, reload page → Cart retains items
 - [ ] C04 - Empty cart state: Remove all items → Message: "Your cart is empty" shown
 
 ## 💳 Checkout
 
-- [ ] CH01 - Open checkout: Proceed to checkout from cart → Checkout page loads
+- [X] CH01 - Open checkout: Proceed to checkout from cart → Checkout page loads
 - [x] CH02 - Fill in valid form details: Enter shipping & billing info → Form accepts and moves forward
 - [x] CH03 - Submit checkout: Click "Place Order" → Confirmation shown or summary displayed
 - [x] CH04 - Form validation on checkout: Leave required fields empty → Errors shown per field

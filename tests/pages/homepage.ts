@@ -20,6 +20,8 @@ private productsCardSelector: Locator;
 private productsCardImageSelector: Locator;
 
 private firstItem: Locator;
+private productsNameSelector: Locator;
+private productsPriceSelector: Locator;
 
 constructor(page:Page){
     this.page = page;
@@ -46,9 +48,30 @@ constructor(page:Page){
     // Universal PRODCUCT CARD
     this.productsCardSelector = this.page.locator('[data-test^="product-"]');
     this.productsCardImageSelector = this.page.locator('[data-test^="product-"] img');
+    this.productsNameSelector = this.page.locator('[data-test^="product-"] h5');
+    this.productsPriceSelector = this.page.locator('[data-test^="product-"] [data-test="product-price"]')
+
 
     //
 
+}
+
+getProductsPriceLocator():Locator{
+    return this.productsPriceSelector;
+}
+
+getProductsNameLocator():Locator{
+    return this.productsNameSelector;
+}
+
+
+
+getProductsPriceSelector(index:number):Locator{
+    return this.productsPriceSelector.nth(index);
+}
+
+getProductsNameSelector(index:number):Locator{
+    return this.productsNameSelector.nth(index);
 }
 
 getProductElement(index:number):Locator{
