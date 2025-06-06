@@ -34,7 +34,7 @@ getPasswordErrorMsgLocator():Locator{
 }
 
 getEmailErrorMsgLocator():Locator{
-    return this.emailErrorMsg
+    return this.emailErrorMsg;
 }
 
 async clickLoginButton(){
