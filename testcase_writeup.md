@@ -40,6 +40,8 @@
 - [x] E2E02 - Logged-in user purchase: Login > Add to cart > Checkout → Order completes and is tied to user
 - [x] E2E03 - Cart persists after login: Add to cart > Login → Cart retains added items
 
+TO BE ADDED ---
+
 ## 📱 Mobile
 
 - [ ] M01 - Mobile view loads correctly: Open site in mobile viewport → Layout fits screen, no horizontal scroll
