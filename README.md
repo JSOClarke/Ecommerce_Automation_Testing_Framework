@@ -1,8 +1,8 @@
 # Ecommerce Automation Testing Framework
 
-Welcome to my personal testing project! This repo demonstrates how I apply software testing best practices using an example eCommerce website.
+Welcome to my personal testing project! This repo demonstrates how I apply software testing best practices using an eCommerce website.
 
-## 🔍 Purpose
+## Purpose
 
 I'm using this repo to test a demo eCommerce site using a modern test stack:
 
